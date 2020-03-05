@@ -19,13 +19,32 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-top: 44px;
 }
 
 .App-link {
   color: #61dafb;
+}
+input {
+  text-align: right;
+  width: 111px;
+  margin: 4px 12px;
+  padding: 6px;
+  font-size: calc(10px + 2vmin);
+  border-radius: 8px;
+}
+table {
+  width: 100%;
+  margin-top: 14px;
+}
+tr {
+  background-color: #323;
+}
+td {
+  border: 1px solid #333;
 }
 
 @keyframes App-logo-spin {
