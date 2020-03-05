@@ -1,41 +1,48 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
-    const [rcfRates, setRcfRates] = useState([1, 2, 3]);
-    const [blRates, setBlRates] = useState([4, 5, 6]);
-    const [amount, setAmount] = useState(10000);
-    const [duration, setDuration] = useState(4);
-    const [rCFInterestRate, setRCFInterestRate] = useState(3);
-    const [bLInterestRate, setBLInterestRate] = useState(3);
+    const initialAmount = 10000;
+    const minAmount = 100;
+    const maxAmount = 1000000;
+    const initialDuration = 4;
+    const minDuration = 1;
+    const maxDuration = 30 * 12;
+    const initialRCFInterestRate = 3;
+    const initialBLInterestRate = 3;
+    const bLInitialFeePercent = 10;
 
-    // useEffect(() => {
-    //     setDuration(5);
-    // },[]);
+
+    const [rcfRates, setRcfRates] = useState([]);
+    const [blRates, setBlRates] = useState([]);
+    const [amount, setAmount] = useState(initialAmount);
+    const [duration, setDuration] = useState(initialDuration);
+    const [rCFInterestRate, setRCFInterestRate] = useState(initialRCFInterestRate);
+    const [bLInterestRate, setBLInterestRate] = useState(initialBLInterestRate);
+
     useEffect(() => {
-        // tslint:disable-next-line:no-console
-        console.log('duration, rCFInterestRate:', duration, rCFInterestRate, bLInterestRate);
-
-        const calculateRcfRates = () => {
+        const calculateRates = (interestRate, initialFee) => {
             const rates = [];
-            for (let i = 0; i < duration; i++) {
-                rates.push(i * rCFInterestRate / 100);
+            const principal = amount / duration;
+            for (let month = 1; month <= duration; month++) {
+                const baseInterest = (amount - principal * (month - 1)) * interestRate / 100;
+                const interest = month === 1
+                    ? baseInterest + initialFee
+                    : baseInterest;
+                const total = principal + interest;
+                rates.push({
+                    date: month,
+                    principal,
+                    interest,
+                    total
+                });
             }
-            setRcfRates(rates);
+            return rates;
         };
-
-        const calculateBlRates = () => {
-            const rates = [];
-            for (let i = 0; i < duration; i++) {
-                rates.push(i * 2 * bLInterestRate / 100);
-            }
-            setBlRates(rates);
-        };
-
-        calculateRcfRates();
-        calculateBlRates();
-    }, [duration, rCFInterestRate, bLInterestRate]);
+        const bLInitialFee = amount / bLInitialFeePercent;
+        setRcfRates(calculateRates(rCFInterestRate, 0));
+        setBlRates(calculateRates(bLInterestRate, bLInitialFee));
+    }, [amount, duration, rCFInterestRate, bLInterestRate]);
 
     const onDurationChange = (ev) => {
         setDuration(ev.target.value);
@@ -53,27 +60,51 @@ function App() {
         setBLInterestRate(value);
     };
 
-    // const setRates = () => {}
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
                 <form>
                     <div>
                         <label>
-                            Amount requested <input type="number" value={amount} onChange={onAmountChange}/> (in £)
+                            Amount requested
+                            <input
+                                type="number"
+                                value={amount}
+                                min={minAmount}
+                                max={maxAmount}
+                                onChange={onAmountChange}
+                            />
+                            (£)
                         </label>
                     </div>
                     <div>
-                        Duration <input type="number" value={duration} onChange={onDurationChange}/> (in months)
+                        Duration
+                        <input
+                            type="number"
+                            value={duration}
+                            min={minDuration}
+                            max={maxDuration}
+                            onChange={onDurationChange}
+                        />
+                        (months)
                     </div>
                 </form>
                 <div style={{display: 'flex', padding: 44}}>
-                    <span>
-                        <TableSection items={rcfRates} interestRate={rCFInterestRate} onInterestChange={onRCFInterestChange}></TableSection>
+                    <span style={{width: '50%'}}>
+                        <TableSection
+                            title='Revolving Credit Facility'
+                            items={rcfRates}
+                            interestRate={rCFInterestRate}
+                            onInterestChange={onRCFInterestChange}
+                        />
                     </span>
-                    <span style={{marginLeft: 44}}>
-                        <TableSection items={blRates} interestRate={bLInterestRate} onInterestChange={onBLInterestChange}></TableSection>
+                    <span style={{width: '50%', marginLeft: 44}}>
+                        <TableSection
+                            title='Business Loan'
+                            items={blRates}
+                            interestRate={bLInterestRate}
+                            onInterestChange={onBLInterestChange}
+                        />
                     </span>
                 </div>
             </header>
@@ -91,33 +122,69 @@ const TableSection = (props) => {
         <div style={{backgroundColor: '#444', padding: 22}}>
             <form>
                 <label>
-                    Interest rate <input type="text" value={interestRate} onChange={onInterestRateChange}/> (in %)
+                    Interest rate
+                    <input
+                        type="number"
+                        value={interestRate}
+                        onChange={onInterestRateChange}
+                    />
+                    (%)
                 </label>
             </form>
             <Table items={items}></Table>
+            <h2>{props.title}</h2>
         </div>
     )
 }
 
+const roundMoney = (amount) => {
+    return Math.round((amount * 100) / 100);
+}
+
 const Table = (props) => {
-    const {items} = props;
+
+    const getColumnTotal = (fieldName) => {
+        return props.items.reduce((sum, item) => sum + item[fieldName], 0)
+    }
+
+    const getPrincipalTotal = () => {
+        return roundMoney(getColumnTotal('principal'));
+    }
+    const getInterestTotal = () => {
+        return roundMoney(getColumnTotal('interest'));
+    }
+    const getTotal = () => {
+        return roundMoney(getColumnTotal('total'));
+    }
     return (
         <>
             <table>
                 <thead>
                     <tr>
-                        <th>af</th>
-                        <th>afa</th>
+                        <th>Date</th>
+                        <th>Principal</th>
+                        <th>Interest</th>
+                        <th>Total Repayment</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map(item =>
-                        (<tr key={item}>
-                            <td>{"af " + item}</td>
-                            <td>{"saf " + item}</td>
+                    {props.items.map(item =>
+                        (<tr key={item.date}>
+                            <td>{item.date}</td>
+                            <td>{roundMoney(item.principal)}</td>
+                            <td>{roundMoney(item.interest)}</td>
+                            <td>{roundMoney(item.total)}</td>
                         </tr>)
                     )}
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Total</th>
+                        <th>{getPrincipalTotal()}</th>
+                        <th>{getInterestTotal()}</th>
+                        <th>{getTotal()}</th>
+                    </tr>
+                </tfoot>
             </table>
         </>
     )
