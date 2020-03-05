@@ -12,7 +12,6 @@ function App() {
     const initialBLInterestRate = 3;
     const bLInitialFeePercent = 10;
 
-
     const [rcfRates, setRcfRates] = useState([]);
     const [blRates, setBlRates] = useState([]);
     const [amount, setAmount] = useState(initialAmount);
@@ -21,17 +20,23 @@ function App() {
     const [bLInterestRate, setBLInterestRate] = useState(initialBLInterestRate);
 
     useEffect(() => {
+        const bLInitialFee = amount / bLInitialFeePercent;
+        const year = new Date().getFullYear();
+        const currentMonth = new Date().getUTCMonth();
+        const day = new Date().getUTCDay() + 1;
+
         const calculateRates = (interestRate, initialFee) => {
             const rates = [];
             const principal = amount / duration;
             for (let month = 1; month <= duration; month++) {
+                const date =  (new Date(Date.UTC(year, currentMonth + month, day))).toLocaleDateString();
                 const baseInterest = (amount - principal * (month - 1)) * interestRate / 100;
                 const interest = month === 1
                     ? baseInterest + initialFee
                     : baseInterest;
                 const total = principal + interest;
                 rates.push({
-                    date: month,
+                    date,
                     principal,
                     interest,
                     total
@@ -39,7 +44,6 @@ function App() {
             }
             return rates;
         };
-        const bLInitialFee = amount / bLInitialFeePercent;
         setRcfRates(calculateRates(rCFInterestRate, 0));
         setBlRates(calculateRates(bLInterestRate, bLInitialFee));
     }, [amount, duration, rCFInterestRate, bLInterestRate]);
