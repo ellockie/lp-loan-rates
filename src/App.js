@@ -29,6 +29,8 @@ function App() {
     const [rcfValid, setRcfValid] = useState(false);
     const [blValid, setBlValid] = useState(false);
 
+    const [errorMessage, setErrorMessage] = useState('');
+
     useEffect(() => {
         (async () => {
             try {
@@ -37,9 +39,10 @@ function App() {
 
                 setRcfConfig(configData.revolving_credit_facility);
                 setBlConfig(configData.business_loan);
-                setConfigLoaded(true)
+                setConfigLoaded(true);
             }
             catch (err) {
+                setErrorMessage("Ooops, could not load application's configuration");
                 console.error("error:", err);
             }
         })()
@@ -168,7 +171,9 @@ function App() {
             <header className="App-header">
                 {configLoaded
                     ? renderMain()
-                    : <div>Loading...</div>
+                    : errorMessage
+                        ? <div>errorMessage</div>
+                        : <div>Loading...</div>
                 }
             </header>
         </div>
