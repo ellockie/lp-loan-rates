@@ -102,6 +102,15 @@ function App() {
     };
 
 
+    const renderMain = () => {
+        return (
+            <>
+                {renderForm()}
+                {renderTables()}
+            </>
+        );
+    }
+
     const renderForm = () => {
         return (
             <form>
@@ -109,6 +118,7 @@ function App() {
                     <label>
                         Amount requested
                         <input
+                            className='amount'
                             type="number"
                             value={amount}
                             min={minAmount}
@@ -155,14 +165,6 @@ function App() {
                     />
                 </span>
             </div>
-        );
-    }
-    const renderMain = () => {
-        return (
-            <>
-                {renderForm()}
-                {renderTables()}
-            </>
         );
     }
 
@@ -216,7 +218,7 @@ const ProductSection = (props) => {
 }
 
 const roundMoney = (amount) => {
-    return Math.round((amount * 100) / 100);
+    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amount);
 }
 
 const Table = (props) => {
@@ -234,6 +236,7 @@ const Table = (props) => {
     const getTotal = () => {
         return roundMoney(getColumnTotal('total'));
     }
+
     return (
         <>
             <table>

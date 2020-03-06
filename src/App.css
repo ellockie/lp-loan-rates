@@ -3,17 +3,6 @@
   background-color: #282c34;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   min-height: 100vh;
   display: flex;
@@ -28,13 +17,19 @@
 .App-link {
   color: #61dafb;
 }
+h2 {
+  margin: 14px 0 32px 0;
+}
 input {
   text-align: right;
-  width: 144px;
+  width: 88px;
   margin: 4px 12px;
   padding: 6px;
   font-size: calc(10px + 2vmin);
   border-radius: 8px;
+}
+input.amount {
+  width: 188px;
 }
 table {
   width: 100%;
@@ -43,15 +38,14 @@ table {
 tr {
   background-color: #323;
 }
+th {
+  font-size: calc(6px + 2vmin);
+}
+tfoot th {
+  text-align: right;
+}
 td {
   border: 1px solid #333;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  font-size: calc(4px + 2vmin);
+  text-align: right;
 }
