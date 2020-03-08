@@ -3381,6 +3381,16 @@ eslint-module-utils@^2.4.1:
     debug "^2.6.9"
     pkg-dir "^2.0.0"
 
+eslint-plugin-autofix@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-autofix/-/eslint-plugin-autofix-1.0.0.tgz#4efc1bbfbf6138d5cc83efd1564ff048a372f2f9"
+  dependencies:
+    eslint-rule-composer "^0.3.0"
+    espree "^6.1.2"
+    esutils "^2.0.2"
+    lodash "^4.17.15"
+    string-similarity "^4.0.1"
+
 eslint-plugin-flowtype@4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-flowtype/-/eslint-plugin-flowtype-4.6.0.tgz#82b2bd6f21770e0e5deede0228e456cb35308451"
@@ -3435,6 +3445,10 @@ eslint-plugin-react@7.18.0:
     object.values "^1.1.1"
     prop-types "^15.7.2"
     resolve "^1.14.2"
+
+eslint-rule-composer@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-rule-composer/-/eslint-rule-composer-0.3.0.tgz#79320c927b0c5c0d3d3d2b76c8b4a488f25bbaf9"
 
 eslint-scope@^4.0.3:
   version "4.0.3"
@@ -8282,6 +8296,10 @@ string-length@^3.1.0:
   dependencies:
     astral-regex "^1.0.0"
     strip-ansi "^5.2.0"
+
+string-similarity@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/string-similarity/-/string-similarity-4.0.1.tgz#ea7c11f0093cb3088cdcc5eb16cfd90cb54962f7"
 
 string-width@^1.0.1:
   version "1.0.2"

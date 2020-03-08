@@ -1,8 +1,8 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 
-import { ProductSection } from './components/ProductSection'
-import { IRepayment } from "./components/RepaymentsTable";
+import { IRepayment } from './components/RepaymentsTable';
+import { ProductSection } from './components/ProductSection';
 
 import './App.css';
 
@@ -25,7 +25,7 @@ function App(): JSX.Element {
     const initialRCFInterestRate = 3;
     const initialBLInterestRate = 3;
     const bLInitialFeePercent = 10;
-    const configUrl = 'http://www.mocky.io/v2/5d4aa9e93300006f000f5ea9'
+    const configUrl = 'http://www.mocky.io/v2/5d4aa9e93300006f000f5ea9';
 
     const [rcfRates, setRcfRates] = useState<IRepayment[]>([]);
     const [blRates, setBlRates] = useState<IRepayment[]>([]);
@@ -37,7 +37,7 @@ function App(): JSX.Element {
     const [configLoaded, setConfigLoaded] = useState<boolean>(false);
 
     const [rcfConfig, setRcfConfig] = useState<IProductConfig | null>(null);
-    const [blConfig, setBlConfig] = useState<IProductConfig | null>(null)
+    const [blConfig, setBlConfig] = useState<IProductConfig | null>(null);
 
     const [rcfValid, setRcfValid] = useState<boolean>(false);
     const [blValid, setBlValid] = useState<boolean>(false);
@@ -46,7 +46,7 @@ function App(): JSX.Element {
 
 
     useEffect(() => {
-        (async () => {
+        (async (): Promise<void> => {
             try {
                 const config = await axios.get(configUrl);
                 const configData = config.data;
@@ -57,9 +57,9 @@ function App(): JSX.Element {
             }
             catch (err) {
                 setErrorMessage("Ooops, could not load application's configuration");
-                console.error("error:", err);
+                console.error('error:', err);
             }
-        })()
+        })();
     }, []);
 
     useEffect(() => {
@@ -98,7 +98,7 @@ function App(): JSX.Element {
                     && duration >= productConfig.duration_min
                     && duration <= productConfig.duration_max
                 : false;
-        }
+        };
         setRcfRates(calculateRates(rCFInterestRate, 0));
         setBlRates(calculateRates(bLInterestRate, bLInitialFee));
         setRcfValid(isProductValid(rcfConfig));
@@ -172,7 +172,7 @@ function App(): JSX.Element {
                 />
             </span>
         </div>
-    )
+    );
 
     const renderMain = (): JSX.Element => (
         <>

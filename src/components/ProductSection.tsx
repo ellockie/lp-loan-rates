@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 
-import { RepaymentsTable, IRepayment } from './RepaymentsTable'
+import { IRepayment, RepaymentsTable } from  './RepaymentsTable';
 
 
 interface IProductSectionProps {
@@ -45,5 +45,5 @@ export const ProductSection = (props: IProductSectionProps): JSX.Element => {
                 </div>
             }
         </div>
-    )
-}
+    );
+};
