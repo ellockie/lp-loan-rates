@@ -2,8 +2,8 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Input, Dimmer, Loader } from 'semantic-ui-react';
 
-import { IRepayment } from './components/RepaymentsTable';
-import { ProductSection } from './components/ProductSection';
+import { IRepayment } from './components/repaymentsTable/RepaymentsTable';
+import { ProductSection } from './components/productSection/ProductSection';
 
 import './App.css';
 

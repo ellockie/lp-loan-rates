@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { Input, Message } from 'semantic-ui-react';
 
-import { IRepayment, RepaymentsTable } from  './RepaymentsTable';
+import { IRepayment, RepaymentsTable } from  '../repaymentsTable/RepaymentsTable';
 import './productSection.css';
 
 
