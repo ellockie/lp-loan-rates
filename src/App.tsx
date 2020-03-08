@@ -248,12 +248,11 @@ const ProductSection = (props: IProductSectionProps) => {
     )
 }
 
-// TODO: rename
-const roundMoney = (amount: number) => {
-    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amount);
-}
-
 const RepaymentsTable = (props: IRepaymentsTableProps) => {
+
+    const formatCurrency = (amount: number): string => {
+        return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amount);
+    }
 
     const getColumnTotal = (fieldName: RepaymentField) => {
         return props.repayments
@@ -261,13 +260,13 @@ const RepaymentsTable = (props: IRepaymentsTableProps) => {
     }
 
     const getPrincipalTotal = () => {
-        return roundMoney(getColumnTotal('principal'));
+        return formatCurrency(getColumnTotal('principal'));
     }
     const getInterestTotal = () => {
-        return roundMoney(getColumnTotal('interest'));
+        return formatCurrency(getColumnTotal('interest'));
     }
     const getTotal = () => {
-        return roundMoney(getColumnTotal('total'));
+        return formatCurrency(getColumnTotal('total'));
     }
 
     return (
@@ -285,9 +284,9 @@ const RepaymentsTable = (props: IRepaymentsTableProps) => {
                     {props.repayments.map((repayment: IRepayment) =>
                         (<tr key={repayment.dateString}>
                             <td>{repayment.dateString}</td>
-                            <td>{roundMoney(repayment.principal)}</td>
-                            <td>{roundMoney(repayment.interest)}</td>
-                            <td>{roundMoney(repayment.total)}</td>
+                            <td>{formatCurrency(repayment.principal)}</td>
+                            <td>{formatCurrency(repayment.interest)}</td>
+                            <td>{formatCurrency(repayment.total)}</td>
                         </tr>)
                     )}
                 </tbody>
