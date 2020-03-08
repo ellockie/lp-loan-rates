@@ -7,7 +7,7 @@
 .tables-section {
     display: flex;
     padding: 44px;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: flex-start;
 }
 .ui.input {

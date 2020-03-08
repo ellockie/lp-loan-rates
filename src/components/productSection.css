@@ -1,8 +1,9 @@
 .product {
     padding: 32px;
     border-radius: 8px;
-    border: 1px solid #f4f4f4;
+    border: 1px solid #eaeaea;
     box-shadow: 16px 16px 32px #82828211;
+    margin: 22px;
 }
 
 h2 {
