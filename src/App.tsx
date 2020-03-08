@@ -125,17 +125,6 @@ function App(): JSX.Element {
     const renderForm = (): JSX.Element => (
         <form>
             <div>
-                {/* <label>
-                    Amount requested
-                    <input
-                        className='amount'
-                        type="number"
-                        value={amount}
-                        min={minAmount}
-                        max={maxAmount}
-                        onChange={onAmountChange}
-                    /> */}
-
                 <Input
                     type="number"
                     value={amount}
@@ -146,10 +135,8 @@ function App(): JSX.Element {
                     size='large'
                 />
                 &pound;
-                {/* </label> */}
             </div>
             <div>
-                {/* Duration */}
                 <Input
                     type="number"
                     value={duration}
