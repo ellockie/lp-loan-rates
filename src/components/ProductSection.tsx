@@ -30,6 +30,7 @@ export const ProductSection = (props: IProductSectionProps): JSX.Element => {
                             <input
                                 type="number"
                                 value={interestRate}
+                                min='0'
                                 onChange={onInterestRateChange}
                             />
                             (%)
