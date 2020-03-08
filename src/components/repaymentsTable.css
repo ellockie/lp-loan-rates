@@ -1,0 +1,25 @@
+.ui.table {
+    box-shadow: 2px 2px 1px #8882;
+}
+.ui.table thead th {
+    text-align: center;
+}
+.ui.table tfoot th  {
+    text-align: right;
+    font-weight: 700;
+}
+.ui.table td {
+    text-align: right;
+}
+.ui.table td.date {
+    text-align: center;
+}
+.product .ui.input {
+    margin: 20px 10px;
+}
+.product .ui.input input {
+    text-align: right;
+}
+tfoot tr th {
+    background-color: #f3f3f3 !important;
+}

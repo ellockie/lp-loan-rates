@@ -1,0 +1,16 @@
+.product {
+    padding: 32px;
+    border-radius: 8px;
+    border: 1px solid #f4f4f4;
+    box-shadow: 16px 16px 32px #82828211;
+}
+
+h2 {
+    color: red;
+}
+
+.product input {
+    width: 64px;
+    text-align: right;
+    margin-right: 10px;
+}

@@ -1,51 +1,21 @@
 .App {
-  text-align: center;
-  background-color: #282c34;
+    text-align: center;
 }
-
 .App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  padding-top: 44px;
+    padding-top: 44px;
 }
-
-.App-link {
-  color: #61dafb;
+.tables-section {
+    display: flex;
+    padding: 44px;
+    justify-content: space-evenly;
+    align-items: flex-start;
 }
-h2 {
-  margin: 14px 0 32px 0;
+.ui.input {
+    margin: 10px 10px;
 }
-input {
-  text-align: right;
-  width: 88px;
-  margin: 4px 12px;
-  padding: 6px;
-  font-size: calc(10px + 2vmin);
-  border-radius: 8px;
+.ui.label {
+    background-color: #ececec;
 }
-input.amount {
-  width: 188px;
-}
-table {
-  width: 100%;
-  margin-top: 14px;
-}
-tr {
-  background-color: #323;
-}
-th {
-  font-size: calc(6px + 2vmin);
-}
-tfoot th {
-  text-align: right;
-}
-td {
-  border: 1px solid #333;
-  font-size: calc(4px + 2vmin);
-  text-align: right;
+.ui.input input {
+    text-align: right;
 }

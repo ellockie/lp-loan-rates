@@ -1,6 +1,8 @@
 import React, { ChangeEvent } from 'react';
+import { Input } from 'semantic-ui-react';
 
 import { IRepayment, RepaymentsTable } from  './RepaymentsTable';
+import './productSection.css';
 
 
 interface IProductSectionProps {
@@ -14,35 +16,34 @@ interface IProductSectionProps {
 
 export const ProductSection = (props: IProductSectionProps): JSX.Element => {
     const { productValid, repayments, interestRate } = props;
-
     const onInterestRateChange = (ev: ChangeEvent<HTMLInputElement>): void => {
         props.onInterestChange(parseInt(ev.target.value));
     };
 
     return (
-        <div style={{ backgroundColor: '#444', padding: 22 }}>
+        <div className='product'>
             <h2>{props.title}</h2>
             {productValid &&
                 <>
-                    <form>
-                        <label>
-                            Interest rate
-                            <input
+                    <form onSubmit={(ev): void => ev.preventDefault()}>
+                        <div>
+                            <Input
                                 type="number"
                                 value={interestRate}
                                 min='0'
                                 onChange={onInterestRateChange}
+                                label='Interest rate'
+                                size='mini'
                             />
-                            (%)
-                        </label>
+                            &#37;
+                        </div>
                     </form>
                     <RepaymentsTable repayments={repayments}></RepaymentsTable>
-                    {/* <div><TableExamplePagination/></div> */}
                 </>
             }
             {!productValid &&
                 <div>
-                    (This product is not available for your combination of amount and/or duration)
+                    (This product is not available for your<br/>combination of amount and/or duration)
                 </div>
             }
         </div>

@@ -35,14 +35,14 @@ module.exports = {
       "no-return-assign": [ 1 ],
       "no-param-reassign": [ 1 ],
       "no-shadow": [ 1 ],
-      // "camelcase": [ 1 ],
       "no-underscore-dangle" : [0, "always"],
-      "sort-imports": [ 1, {
-          "ignoreCase": false,
-          "ignoreDeclarationSort": false,
-          "ignoreMemberSort": false,
-          // "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-      }],
+      // "camelcase": [ 1 ],
+      // "sort-imports": [ 1, {
+      //     "ignoreCase": false,
+      //     "ignoreDeclarationSort": false,
+      //     "ignoreMemberSort": false,
+      //     // "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+      // }],
 
       "react/prefer-es6-class": 0,
       "react/jsx-filename-extension": 0,

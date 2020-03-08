@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
+import { Input, Dimmer, Loader } from 'semantic-ui-react';
 
 import { IRepayment } from './components/RepaymentsTable';
 import { ProductSection } from './components/ProductSection';
@@ -124,7 +125,7 @@ function App(): JSX.Element {
     const renderForm = (): JSX.Element => (
         <form>
             <div>
-                <label>
+                {/* <label>
                     Amount requested
                     <input
                         className='amount'
@@ -133,44 +134,52 @@ function App(): JSX.Element {
                         min={minAmount}
                         max={maxAmount}
                         onChange={onAmountChange}
-                    />
-                    (£)
-                </label>
+                    /> */}
+
+                <Input
+                    type="number"
+                    value={amount}
+                    min={minAmount}
+                    max={maxAmount}
+                    onChange={onAmountChange}
+                    label='Amount requested'
+                    size='large'
+                />
+                &pound;
+                {/* </label> */}
             </div>
             <div>
-                Duration
-                <input
+                {/* Duration */}
+                <Input
                     type="number"
                     value={duration}
                     min={minDuration}
                     max={maxDuration}
                     onChange={onDurationChange}
+                    label='Duration'
+                    size='large'
                 />
-                (months)
+                months
             </div>
         </form>
     );
 
     const renderTables = (): JSX.Element => (
-        <div style={{ display: 'flex', padding: 44 }}>
-            <span style={{ width: '50%' }}>
-                <ProductSection
-                    title='Revolving Credit Facility'
-                    productValid={rcfValid}
-                    repayments={rcfRates}
-                    interestRate={rCFInterestRate}
-                    onInterestChange={onRCFInterestChange}
-                />
-            </span>
-            <span style={{ width: '50%', marginLeft: 44 }}>
-                <ProductSection
-                    title='Business Loan'
-                    productValid={blValid}
-                    repayments={blRates}
-                    interestRate={bLInterestRate}
-                    onInterestChange={onBLInterestChange}
-                />
-            </span>
+        <div className='tables-section'>
+            <ProductSection
+                title='Revolving Credit Facility'
+                productValid={rcfValid}
+                repayments={rcfRates}
+                interestRate={rCFInterestRate}
+                onInterestChange={onRCFInterestChange}
+            />
+            <ProductSection
+                title='Business Loan'
+                productValid={blValid}
+                repayments={blRates}
+                interestRate={bLInterestRate}
+                onInterestChange={onBLInterestChange}
+            />
         </div>
     );
 
@@ -188,7 +197,9 @@ function App(): JSX.Element {
                     ? renderMain()
                     : errorMessage
                         ? <div>errorMessage</div>
-                        : <div>Loading...</div>
+                        : <Dimmer active>
+                            <Loader size='huge'>Loading</Loader>
+                        </Dimmer>
                 }
             </header>
         </div>
