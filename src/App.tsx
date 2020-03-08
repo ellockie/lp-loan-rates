@@ -1,7 +1,35 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 import axios from 'axios';
 import './App.css';
+
+interface IRepayment {
+    dateString: string,
+    principal: number,
+    interest: number,
+    total: number
+}
+
+type RepaymentField = 'principal' | 'interest' | 'total';
+
+interface IProductSectionProps {
+    title: string,
+    productValid: boolean,
+    repayments: IRepayment[],
+    interestRate: number,
+    onInterestChange(newRate: number): void
+}
+
+interface IRepaymentsTableProps {
+    repayments: IRepayment[]
+}
+
+interface IProductConfig {
+    amount_min: number,
+    amount_max: number,
+    duration_min: number,
+    duration_max: number,
+}
 
 function App() {
     const initialAmount = 10000;
@@ -15,22 +43,23 @@ function App() {
     const bLInitialFeePercent = 10;
     const configUrl = 'http://www.mocky.io/v2/5d4aa9e93300006f000f5ea9'
 
-    const [rcfRates, setRcfRates] = useState([]);
-    const [blRates, setBlRates] = useState([]);
-    const [amount, setAmount] = useState(initialAmount);
-    const [duration, setDuration] = useState(initialDuration);
-    const [rCFInterestRate, setRCFInterestRate] = useState(initialRCFInterestRate);
-    const [bLInterestRate, setBLInterestRate] = useState(initialBLInterestRate);
+    const [rcfRates, setRcfRates] = useState<IRepayment[]>([]);
+    const [blRates, setBlRates] = useState<IRepayment[]>([]);
+    const [amount, setAmount] = useState<number>(initialAmount);
+    const [duration, setDuration] = useState<number>(initialDuration);
+    const [rCFInterestRate, setRCFInterestRate] = useState<number>(initialRCFInterestRate);
+    const [bLInterestRate, setBLInterestRate] = useState<number>(initialBLInterestRate);
 
-    const [configLoaded, setConfigLoaded] = useState(false);
+    const [configLoaded, setConfigLoaded] = useState<boolean>(false);
 
-    const [rcfConfig, setRcfConfig] = useState({})
-    const [blConfig, setBlConfig] = useState({})
+    const [rcfConfig, setRcfConfig] = useState<IProductConfig | null>(null);
+    const [blConfig, setBlConfig] = useState<IProductConfig | null>(null)
 
-    const [rcfValid, setRcfValid] = useState(false);
-    const [blValid, setBlValid] = useState(false);
+    const [rcfValid, setRcfValid] = useState<boolean>(false);
+    const [blValid, setBlValid] = useState<boolean>(false);
 
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState<string>('');
+
 
     useEffect(() => {
         (async () => {
@@ -55,18 +84,21 @@ function App() {
         const currentMonth = new Date().getUTCMonth();
         const day = new Date().getUTCDay() + 1;
 
-        const calculateRates = (interestRate, initialFee) => {
-            const rates = [];
+        const calculateRates = (interestRate: number, initialFee: number): IRepayment[] => {
+            const rates: IRepayment[] = [];
+            if (duration <= 1) {
+                return rates;
+            }
             const principal = amount / duration;
             for (let month = 1; month <= duration; month++) {
-                const date =  (new Date(Date.UTC(year, currentMonth + month, day))).toLocaleDateString();
+                const dateString = (new Date(Date.UTC(year, currentMonth + month, day))).toLocaleDateString();
                 const baseInterest = (amount - principal * (month - 1)) * interestRate / 100;
                 const interest = month === 1
                     ? baseInterest + initialFee
                     : baseInterest;
                 const total = principal + interest;
                 rates.push({
-                    date,
+                    dateString,
                     principal,
                     interest,
                     total
@@ -74,11 +106,14 @@ function App() {
             }
             return rates;
         };
-        const isProductValid = (productConfig) => {
-            return amount >= productConfig.amount_min
-                && amount <= productConfig.amount_max
-                && duration >= productConfig.duration_min
-                && duration <= productConfig.duration_max;
+
+        const isProductValid = (productConfig: IProductConfig | null): boolean => {
+            return productConfig
+                ? amount >= productConfig.amount_min
+                    && amount <= productConfig.amount_max
+                    && duration >= productConfig.duration_min
+                    && duration <= productConfig.duration_max
+                : false;
         }
         setRcfRates(calculateRates(rCFInterestRate, 0));
         setBlRates(calculateRates(bLInterestRate, bLInitialFee));
@@ -86,24 +121,24 @@ function App() {
         setBlValid(isProductValid(blConfig));
     }, [amount, duration, rCFInterestRate, bLInterestRate, rcfConfig, blConfig]);
 
-    const onDurationChange = (ev) => {
-        setDuration(ev.target.value);
+    const onDurationChange = (ev: ChangeEvent<HTMLInputElement>): void => {
+        setDuration(parseInt(ev.target.value));
     };
 
-    const onAmountChange = (ev) => {
-        setAmount(ev.target.value);
+    const onAmountChange = (ev: ChangeEvent<HTMLInputElement>): void => {
+        setAmount(parseInt(ev.target.value));
     };
 
-    const onRCFInterestChange = (value) => {
-        setRCFInterestRate(value);
+    const onRCFInterestChange = (newRate: number): void => {
+        setRCFInterestRate(newRate);
     };
 
-    const onBLInterestChange = (value) => {
-        setBLInterestRate(value);
+    const onBLInterestChange = (newRate: number): void => {
+        setBLInterestRate(newRate);
     };
 
 
-    const renderMain = () => {
+    const renderMain = (): JSX.Element => {
         return (
             <>
                 {renderForm()}
@@ -112,7 +147,7 @@ function App() {
         );
     }
 
-    const renderForm = () => {
+    const renderForm = (): JSX.Element => {
         return (
             <form>
                 <div>
@@ -146,21 +181,21 @@ function App() {
 
     const renderTables = () => {
         return (
-            <div style={{display: 'flex', padding: 44}}>
-                <span style={{width: '50%'}}>
+            <div style={{ display: 'flex', padding: 44 }}>
+                <span style={{ width: '50%' }}>
                     <ProductSection
                         title='Revolving Credit Facility'
                         productValid={rcfValid}
-                        items={rcfRates}
+                        repayments={rcfRates}
                         interestRate={rCFInterestRate}
                         onInterestChange={onRCFInterestChange}
                     />
                 </span>
-                <span style={{width: '50%', marginLeft: 44}}>
+                <span style={{ width: '50%', marginLeft: 44 }}>
                     <ProductSection
                         title='Business Loan'
                         productValid={blValid}
-                        items={blRates}
+                        repayments={blRates}
                         interestRate={bLInterestRate}
                         onInterestChange={onBLInterestChange}
                     />
@@ -183,15 +218,15 @@ function App() {
     );
 }
 
-const ProductSection = (props) => {
-    const {productValid, items, interestRate} = props;
+const ProductSection = (props: IProductSectionProps) => {
+    const { productValid, repayments, interestRate } = props;
 
-    const onInterestRateChange = (ev) => {
-        props.onInterestChange(ev.target.value);
+    const onInterestRateChange = (ev: ChangeEvent<HTMLInputElement>) => {
+        props.onInterestChange(parseInt(ev.target.value));
     };
 
     return (
-        <div style={{backgroundColor: '#444', padding: 22}}>
+        <div style={{ backgroundColor: '#444', padding: 22 }}>
             <h2>{props.title}</h2>
             {productValid &&
                 <>
@@ -206,7 +241,7 @@ const ProductSection = (props) => {
                             (%)
                         </label>
                     </form>
-                    <InstallmentsTable items={items}></InstallmentsTable>
+                    <RepaymentsTable repayments={repayments}></RepaymentsTable>
                     {/* <div><TableExamplePagination/></div> */}
                 </>
             }
@@ -219,14 +254,16 @@ const ProductSection = (props) => {
     )
 }
 
-const roundMoney = (amount) => {
+// TODO: rename
+const roundMoney = (amount: number) => {
     return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amount);
 }
 
-const InstallmentsTable = (props) => {
+const RepaymentsTable = (props: IRepaymentsTableProps) => {
 
-    const getColumnTotal = (fieldName) => {
-        return props.items.reduce((sum, item) => sum + item[fieldName], 0)
+    const getColumnTotal = (fieldName: RepaymentField) => {
+        return props.repayments
+            .reduce((sum: number, repayment: IRepayment) => sum + repayment[fieldName], 0)
     }
 
     const getPrincipalTotal = () => {
@@ -251,12 +288,12 @@ const InstallmentsTable = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.items.map(item =>
-                        (<tr key={item.date}>
-                            <td>{item.date}</td>
-                            <td>{roundMoney(item.principal)}</td>
-                            <td>{roundMoney(item.interest)}</td>
-                            <td>{roundMoney(item.total)}</td>
+                    {props.repayments.map((repayment: IRepayment) =>
+                        (<tr key={repayment.dateString}>
+                            <td>{repayment.dateString}</td>
+                            <td>{roundMoney(repayment.principal)}</td>
+                            <td>{roundMoney(repayment.interest)}</td>
+                            <td>{roundMoney(repayment.total)}</td>
                         </tr>)
                     )}
                 </tbody>
