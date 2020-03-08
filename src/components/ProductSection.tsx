@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { Input } from 'semantic-ui-react';
+import { Input, Message } from 'semantic-ui-react';
 
 import { IRepayment, RepaymentsTable } from  './RepaymentsTable';
 import './productSection.css';
@@ -42,9 +42,12 @@ export const ProductSection = (props: IProductSectionProps): JSX.Element => {
                 </>
             }
             {!productValid &&
-                <div>
-                    (This product is not available for your<br/>combination of amount and/or duration)
-                </div>
+                <Message>
+                    <Message.Header>Not available</Message.Header>
+                    <p>
+                    This product is not available for your<br/>combination of amount and/or duration
+                    </p>
+                </Message>
             }
         </div>
     );
