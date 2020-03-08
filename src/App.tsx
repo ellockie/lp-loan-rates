@@ -138,71 +138,65 @@ function App() {
     };
 
 
-    const renderMain = (): JSX.Element => {
-        return (
-            <>
-                {renderForm()}
-                {renderTables()}
-            </>
-        );
-    }
+    const renderMain = (): JSX.Element => (
+        <>
+            {renderForm()}
+            {renderTables()}
+        </>
+    );
 
-    const renderForm = (): JSX.Element => {
-        return (
-            <form>
-                <div>
-                    <label>
-                        Amount requested
-                        <input
-                            className='amount'
-                            type="number"
-                            value={amount}
-                            min={minAmount}
-                            max={maxAmount}
-                            onChange={onAmountChange}
-                        />
-                        (£)
-                    </label>
-                </div>
-                <div>
-                    Duration
+    const renderForm = (): JSX.Element => (
+        <form>
+            <div>
+                <label>
+                    Amount requested
                     <input
+                        className='amount'
                         type="number"
-                        value={duration}
-                        min={minDuration}
-                        max={maxDuration}
-                        onChange={onDurationChange}
+                        value={amount}
+                        min={minAmount}
+                        max={maxAmount}
+                        onChange={onAmountChange}
                     />
-                    (months)
-                </div>
-            </form>
-        )
-    };
-
-    const renderTables = () => {
-        return (
-            <div style={{ display: 'flex', padding: 44 }}>
-                <span style={{ width: '50%' }}>
-                    <ProductSection
-                        title='Revolving Credit Facility'
-                        productValid={rcfValid}
-                        repayments={rcfRates}
-                        interestRate={rCFInterestRate}
-                        onInterestChange={onRCFInterestChange}
-                    />
-                </span>
-                <span style={{ width: '50%', marginLeft: 44 }}>
-                    <ProductSection
-                        title='Business Loan'
-                        productValid={blValid}
-                        repayments={blRates}
-                        interestRate={bLInterestRate}
-                        onInterestChange={onBLInterestChange}
-                    />
-                </span>
+                    (£)
+                </label>
             </div>
-        );
-    }
+            <div>
+                Duration
+                <input
+                    type="number"
+                    value={duration}
+                    min={minDuration}
+                    max={maxDuration}
+                    onChange={onDurationChange}
+                />
+                (months)
+            </div>
+        </form>
+    );
+
+    const renderTables = () => (
+        <div style={{ display: 'flex', padding: 44 }}>
+            <span style={{ width: '50%' }}>
+                <ProductSection
+                    title='Revolving Credit Facility'
+                    productValid={rcfValid}
+                    repayments={rcfRates}
+                    interestRate={rCFInterestRate}
+                    onInterestChange={onRCFInterestChange}
+                />
+            </span>
+            <span style={{ width: '50%', marginLeft: 44 }}>
+                <ProductSection
+                    title='Business Loan'
+                    productValid={blValid}
+                    repayments={blRates}
+                    interestRate={bLInterestRate}
+                    onInterestChange={onBLInterestChange}
+                />
+            </span>
+        </div>
+    )
 
     return (
         <div className="App">
