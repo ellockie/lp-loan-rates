@@ -4,11 +4,11 @@ import { RepaymentsTable, IRepayment } from './RepaymentsTable'
 
 
 interface IProductSectionProps {
-    title: string,
-    productValid: boolean,
-    repayments: IRepayment[],
-    interestRate: number,
-    onInterestChange(newRate: number): void
+    title: string;
+    productValid: boolean;
+    repayments: IRepayment[];
+    interestRate: number;
+    onInterestChange(newRate: number): void;
 }
 
 

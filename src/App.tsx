@@ -8,13 +8,14 @@ import './App.css';
 
 
 interface IProductConfig {
-    amount_min: number,
-    amount_max: number,
-    duration_min: number,
-    duration_max: number,
+    amount_min: number;
+    amount_max: number;
+    duration_min: number;
+    duration_max: number;
 }
 
-function App() {
+
+function App(): JSX.Element {
     const initialAmount = 10000;
     const minAmount = 100;
     const maxAmount = 1000000;
@@ -120,14 +121,6 @@ function App() {
         setBLInterestRate(newRate);
     };
 
-
-    const renderMain = (): JSX.Element => (
-        <>
-            {renderForm()}
-            {renderTables()}
-        </>
-    );
-
     const renderForm = (): JSX.Element => (
         <form>
             <div>
@@ -158,7 +151,7 @@ function App() {
         </form>
     );
 
-    const renderTables = () => (
+    const renderTables = (): JSX.Element => (
         <div style={{ display: 'flex', padding: 44 }}>
             <span style={{ width: '50%' }}>
                 <ProductSection
@@ -180,6 +173,13 @@ function App() {
             </span>
         </div>
     )
+
+    const renderMain = (): JSX.Element => (
+        <>
+            {renderForm()}
+            {renderTables()}
+        </>
+    );
 
     return (
         <div className="App">

@@ -2,14 +2,14 @@ import React from 'react';
 
 
 export interface IRepayment {
-    dateString: string
-    principal: number,
-    interest: number,
-    total: number
+    dateString: string;
+    principal: number;
+    interest: number;
+    total: number;
 }
 
 interface IRepaymentsTableProps {
-    repayments: IRepayment[]
+    repayments: IRepayment[];
 }
 
 type RepaymentField = 'principal' | 'interest' | 'total';
