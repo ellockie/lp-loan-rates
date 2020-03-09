@@ -13,9 +13,13 @@
 .ui.input {
     margin: 10px 10px;
 }
-.ui.label {
-    background-color: #ececec;
-}
 .ui.input input {
     text-align: right;
+    width: 88px;
+}
+.ui.input.amount input {
+    width: 144px;
+}
+.ui.label {
+    background-color: #ececec;
 }

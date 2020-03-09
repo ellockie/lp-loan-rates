@@ -4,6 +4,7 @@ import { Input, Dimmer, Loader } from 'semantic-ui-react';
 
 import { IRepayment } from './components/repaymentsTable/RepaymentsTable';
 import { ProductSection } from './components/productSection/ProductSection';
+import { constrainValue } from './utils/utils';
 
 import './App.css';
 
@@ -17,16 +18,16 @@ interface IProductConfig {
 
 
 function App(): JSX.Element {
+    const configUrl = 'http://www.mocky.io/v2/5d4aa9e93300006f000f5ea9';
+
     const initialAmount = 10000;
-    const minAmount = 100;
-    const maxAmount = 1000000;
+    const amountStep = 100;
     const initialDuration = 4;
-    const minDuration = 1;
-    const maxDuration = 30 * 12;
+    const minInterestRate = 0;
+    const maxInterestRate = 30;
     const initialRCFInterestRate = 3;
     const initialBLInterestRate = 3;
     const bLInitialFeePercent = 10;
-    const configUrl = 'http://www.mocky.io/v2/5d4aa9e93300006f000f5ea9';
 
     const [rcfRates, setRcfRates] = useState<IRepayment[]>([]);
     const [blRates, setBlRates] = useState<IRepayment[]>([]);
@@ -71,7 +72,7 @@ function App(): JSX.Element {
 
         const calculateRates = (interestRate: number, initialFee: number): IRepayment[] => {
             const rates: IRepayment[] = [];
-            if (duration <= 1) {
+            if (duration < 1) {
                 return rates;
             }
             const principal = amount / duration;
@@ -95,9 +96,9 @@ function App(): JSX.Element {
         const isProductValid = (productConfig: IProductConfig | null): boolean => {
             return productConfig
                 ? amount >= productConfig.amount_min
-                    && amount <= productConfig.amount_max
-                    && duration >= productConfig.duration_min
-                    && duration <= productConfig.duration_max
+                && amount <= productConfig.amount_max
+                && duration >= productConfig.duration_min
+                && duration <= productConfig.duration_max
                 : false;
         };
         setRcfRates(calculateRates(rCFInterestRate, 0));
@@ -106,30 +107,48 @@ function App(): JSX.Element {
         setBlValid(isProductValid(blConfig));
     }, [amount, duration, rCFInterestRate, bLInterestRate, rcfConfig, blConfig]);
 
-    const onDurationChange = (ev: ChangeEvent<HTMLInputElement>): void => {
-        setDuration(parseInt(ev.target.value));
+    const getMinAmount = (): number => {
+        return Math.min(rcfConfig ? rcfConfig.amount_min : 1, blConfig ? blConfig.amount_min : 1);
+    };
+
+    const getMaxAmount = (): number => {
+        return Math.max(rcfConfig ? rcfConfig.amount_max : 1, blConfig ? blConfig.amount_max : 1);
+    };
+
+    const getMinDuration = (): number => {
+        return Math.min(rcfConfig ? rcfConfig.duration_min : 1, blConfig ? blConfig.duration_min : 1);
+    };
+
+    const getMaxDuration = (): number => {
+        return Math.max(rcfConfig ? rcfConfig.duration_max : 1, blConfig ? blConfig.duration_max : 1);
     };
 
     const onAmountChange = (ev: ChangeEvent<HTMLInputElement>): void => {
-        setAmount(parseInt(ev.target.value));
+        const newAmount = parseInt(ev.target.value);
+        setAmount(constrainValue(newAmount, getMinAmount(), getMaxAmount()));
+    };
+
+    const onDurationChange = (ev: ChangeEvent<HTMLInputElement>): void => {
+        const newDuration = parseInt(ev.target.value);
+        setDuration(constrainValue(newDuration, getMinDuration(), getMaxDuration()));
     };
 
     const onRCFInterestChange = (newRate: number): void => {
-        setRCFInterestRate(newRate);
+        setRCFInterestRate(constrainValue(newRate, minInterestRate, maxInterestRate));
     };
 
     const onBLInterestChange = (newRate: number): void => {
-        setBLInterestRate(newRate);
+        setBLInterestRate(constrainValue(newRate, minInterestRate, maxInterestRate));
     };
 
     const renderForm = (): JSX.Element => (
         <form>
             <div>
                 <Input
+                    className='amount'
                     type="number"
                     value={amount}
-                    min={minAmount}
-                    max={maxAmount}
+                    step={amountStep}
                     onChange={onAmountChange}
                     label='Amount requested'
                     size='large'
@@ -140,8 +159,6 @@ function App(): JSX.Element {
                 <Input
                     type="number"
                     value={duration}
-                    min={minDuration}
-                    max={maxDuration}
                     onChange={onDurationChange}
                     label='Duration'
                     size='large'

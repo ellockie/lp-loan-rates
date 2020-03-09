@@ -15,22 +15,24 @@ interface IProductSectionProps {
 
 
 export const ProductSection = (props: IProductSectionProps): JSX.Element => {
-    const { productValid, repayments, interestRate } = props;
+
+    const interestRateStep = 0.1;
+
     const onInterestRateChange = (ev: ChangeEvent<HTMLInputElement>): void => {
-        props.onInterestChange(parseInt(ev.target.value));
+        props.onInterestChange(parseFloat(ev.target.value));
     };
 
     return (
         <div className='product'>
             <h2>{props.title}</h2>
-            {productValid &&
+            {props.productValid &&
                 <>
                     <form onSubmit={(ev): void => ev.preventDefault()}>
                         <div>
                             <Input
                                 type="number"
-                                value={interestRate}
-                                min='0'
+                                value={props.interestRate}
+                                step={interestRateStep}
                                 onChange={onInterestRateChange}
                                 label='Interest rate'
                                 size='mini'
@@ -38,10 +40,10 @@ export const ProductSection = (props: IProductSectionProps): JSX.Element => {
                             &#37;
                         </div>
                     </form>
-                    <RepaymentsTable repayments={repayments}></RepaymentsTable>
+                    <RepaymentsTable repayments={props.repayments}></RepaymentsTable>
                 </>
             }
-            {!productValid &&
+            {!props.productValid &&
                 <Message>
                     <Message.Header>Not available</Message.Header>
                     <p>
