@@ -68,9 +68,13 @@ function App(): JSX.Element {
     useEffect(() => {
         const bLInitialFee = amount / bLInitialFeePercent;
 
-        const calculateRates = (interestRate: number, initialFee: number): IRepayment[] => {
+        const calculateRates = (
+            interestRate: number,
+            initialFee: number,
+            productConfig: IProductConfig | null
+        ): IRepayment[] => {
             const rates: IRepayment[] = [];
-            if (duration < 1) {
+            if (duration < 1 || productConfig === null || duration > productConfig.duration_max) {
                 return rates;
             }
             const principal = amount / duration;
@@ -99,8 +103,8 @@ function App(): JSX.Element {
                     && duration <= productConfig.duration_max)
                 : false;
         };
-        setRcfRates(calculateRates(rCFInterestRate, 0));
-        setBlRates(calculateRates(bLInterestRate, bLInitialFee));
+        setRcfRates(calculateRates(rCFInterestRate, 0, rcfConfig));
+        setBlRates(calculateRates(bLInterestRate, bLInitialFee, blConfig));
         setRcfValid(isProductValid(rcfConfig));
         setBlValid(isProductValid(blConfig));
     }, [amount, duration, rCFInterestRate, bLInterestRate, rcfConfig, blConfig]);
