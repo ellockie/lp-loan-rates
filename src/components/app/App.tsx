@@ -198,7 +198,7 @@ function App(): JSX.Element {
                 {configLoaded
                     ? renderMain()
                     : errorMessage
-                        ? <div>errorMessage</div>
+                        ? <div>{errorMessage}</div>
                         : <Dimmer active>
                             <Loader size='huge'>{strings.LOADING}</Loader>
                         </Dimmer>
