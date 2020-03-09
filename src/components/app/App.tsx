@@ -2,12 +2,12 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Input, Dimmer, Loader } from 'semantic-ui-react';
 
-import { IRepayment } from './components/repaymentsTable/RepaymentsTable';
-import { ProductSection } from './components/productSection/ProductSection';
-import { constrainValue } from './utils/utils';
+import { IRepayment } from '../repaymentsTable/RepaymentsTable';
+import { ProductSection } from '../productSection/ProductSection';
+import { constrainValue } from '../../utils/utils';
 
 import './App.css';
-import { strings } from './strings';
+import { strings } from './App.strings';
 
 
 interface IProductConfig {
