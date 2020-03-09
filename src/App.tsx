@@ -7,6 +7,7 @@ import { ProductSection } from './components/productSection/ProductSection';
 import { constrainValue } from './utils/utils';
 
 import './App.css';
+import { strings } from './strings';
 
 
 interface IProductConfig {
@@ -58,11 +59,11 @@ function App(): JSX.Element {
                 setConfigLoaded(true);
             }
             catch (err) {
-                setErrorMessage("Ooops, could not load application's configuration");
+                setErrorMessage(strings.COULD_NOT_LOAD);
                 console.error('error:', err);
             }
         })();
-    }, []);
+    }, [strings]);
 
     useEffect(() => {
         const bLInitialFee = amount / bLInitialFeePercent;
@@ -95,10 +96,10 @@ function App(): JSX.Element {
 
         const isProductValid = (productConfig: IProductConfig | null): boolean => {
             return productConfig
-                ? amount >= productConfig.amount_min
-                && amount <= productConfig.amount_max
-                && duration >= productConfig.duration_min
-                && duration <= productConfig.duration_max
+                ? (amount >= productConfig.amount_min
+                    && amount <= productConfig.amount_max
+                    && duration >= productConfig.duration_min
+                    && duration <= productConfig.duration_max)
                 : false;
         };
         setRcfRates(calculateRates(rCFInterestRate, 0));
@@ -150,7 +151,7 @@ function App(): JSX.Element {
                     value={amount}
                     step={amountStep}
                     onChange={onAmountChange}
-                    label='Amount requested'
+                    label={strings.AMOUNT_REQUESTED}
                     size='large'
                 />
                 &pound;
@@ -160,7 +161,7 @@ function App(): JSX.Element {
                     type="number"
                     value={duration}
                     onChange={onDurationChange}
-                    label='Duration'
+                    label={strings.DURATION}
                     size='large'
                 />
                 months
@@ -171,14 +172,14 @@ function App(): JSX.Element {
     const renderTables = (): JSX.Element => (
         <div className='tables-section'>
             <ProductSection
-                title='Revolving Credit Facility'
+                title={strings.REVOLVING_CREDIT_FACILITY}
                 productValid={rcfValid}
                 repayments={rcfRates}
                 interestRate={rCFInterestRate}
                 onInterestChange={onRCFInterestChange}
             />
             <ProductSection
-                title='Business Loan'
+                title={strings.BUSINESS_LOAN}
                 productValid={blValid}
                 repayments={blRates}
                 interestRate={bLInterestRate}
@@ -202,7 +203,7 @@ function App(): JSX.Element {
                     : errorMessage
                         ? <div>errorMessage</div>
                         : <Dimmer active>
-                            <Loader size='huge'>Loading</Loader>
+                            <Loader size='huge'>{strings.LOADING}</Loader>
                         </Dimmer>
                 }
             </header>
