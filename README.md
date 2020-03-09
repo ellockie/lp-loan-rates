@@ -1,6 +1,6 @@
 ## Project deployed at:
 
-http://lpiwoca.surge.sh/
+### [> Working demo](http://lp-demo-prj-1.surge.sh/)
 
 ---
 
