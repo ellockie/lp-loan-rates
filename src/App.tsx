@@ -63,7 +63,7 @@ function App(): JSX.Element {
                 console.error('error:', err);
             }
         })();
-    }, [strings]);
+    }, []);
 
     useEffect(() => {
         const bLInitialFee = amount / bLInitialFeePercent;
