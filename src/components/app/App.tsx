@@ -4,7 +4,7 @@ import { Input, Dimmer, Loader } from 'semantic-ui-react';
 
 import { IRepayment } from '../repaymentsTable/RepaymentsTable';
 import { ProductSection } from '../productSection/ProductSection';
-import { constrainValue } from '../../utils/utils';
+import { utils } from '../../utils/utils';
 
 import './App.css';
 import { strings } from './App.strings';
@@ -67,9 +67,6 @@ function App(): JSX.Element {
 
     useEffect(() => {
         const bLInitialFee = amount / bLInitialFeePercent;
-        const year = new Date().getFullYear();
-        const currentMonth = new Date().getUTCMonth();
-        const day = new Date().getUTCDay() + 1;
 
         const calculateRates = (interestRate: number, initialFee: number): IRepayment[] => {
             const rates: IRepayment[] = [];
@@ -78,7 +75,7 @@ function App(): JSX.Element {
             }
             const principal = amount / duration;
             for (let month = 1; month <= duration; month++) {
-                const dateString = (new Date(Date.UTC(year, currentMonth + month, day))).toLocaleDateString();
+                const dateString = utils.getDateString(month);
                 const baseInterest = (amount - principal * (month - 1)) * interestRate / 100;
                 const interest = month === 1
                     ? baseInterest + initialFee
@@ -126,20 +123,20 @@ function App(): JSX.Element {
 
     const onAmountChange = (ev: ChangeEvent<HTMLInputElement>): void => {
         const newAmount = parseInt(ev.target.value);
-        setAmount(constrainValue(newAmount, getMinAmount(), getMaxAmount()));
+        setAmount(utils.constrainValue(newAmount, getMinAmount(), getMaxAmount()));
     };
 
     const onDurationChange = (ev: ChangeEvent<HTMLInputElement>): void => {
         const newDuration = parseInt(ev.target.value);
-        setDuration(constrainValue(newDuration, getMinDuration(), getMaxDuration()));
+        setDuration(utils.constrainValue(newDuration, getMinDuration(), getMaxDuration()));
     };
 
     const onRCFInterestChange = (newRate: number): void => {
-        setRCFInterestRate(constrainValue(newRate, minInterestRate, maxInterestRate));
+        setRCFInterestRate(utils.constrainValue(newRate, minInterestRate, maxInterestRate));
     };
 
     const onBLInterestChange = (newRate: number): void => {
-        setBLInterestRate(constrainValue(newRate, minInterestRate, maxInterestRate));
+        setBLInterestRate(utils.constrainValue(newRate, minInterestRate, maxInterestRate));
     };
 
     const renderForm = (): JSX.Element => (

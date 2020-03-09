@@ -1,0 +1,14 @@
+{
+    "revolving_credit_facility": {
+        "amount_min": 1000,
+        "amount_max": 150000,
+        "duration_min": 1,
+        "duration_max": 12
+    },
+    "business_loan": {
+        "amount_min": 10000,
+        "amount_max": 200000,
+        "duration_min": 1,
+        "duration_max": 60
+    }
+}
