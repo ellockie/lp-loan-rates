@@ -73,10 +73,10 @@ function App(): JSX.Element {
             initialFee: number,
             productConfig: IProductConfig | null
         ): IRepayment[] => {
-            const rates: IRepayment[] = [];
             if (duration < 1 || productConfig === null || duration > productConfig.duration_max) {
-                return rates;
+                return [];
             }
+            const rates: IRepayment[] = [];
             const principal = amount / duration;
             for (let month = 1; month <= duration; month++) {
                 const dateString = utils.getDateString(month);
